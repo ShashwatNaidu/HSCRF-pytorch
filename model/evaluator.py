@@ -3,7 +3,7 @@ import numpy as np
 import itertools
 import sys
 
-sys.path.append("..")
+sys.path.append(".")
 import utils
 
 
