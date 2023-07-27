@@ -9,7 +9,7 @@ import torch.nn as nn
 import torch.nn.init
 import sys
 
-sys.path.append("..")
+sys.path.append(".")
 from data_packer import CRFDataset_WC
 
 
