@@ -1,7 +1,9 @@
 from __future__ import division
 import numpy as np
 import itertools
+import sys
 
+sys.path.append("..")
 import utils
 
 
