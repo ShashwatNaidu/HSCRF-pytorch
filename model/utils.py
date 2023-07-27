@@ -8,8 +8,9 @@ import json
 import torch.nn as nn
 import torch.nn.init
 import sys
+import os
 
-sys.path.append(".")
+sys.path.append(os.curdir)
 from data_packer import CRFDataset_WC
 
 
