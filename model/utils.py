@@ -10,7 +10,7 @@ import torch.nn.init
 import sys
 import os
 
-sys.path.append(os.curdir)
+sys.path.append(os.path.dirname(__file__))
 from data_packer import CRFDataset_WC
 
 
