@@ -3,7 +3,9 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 import numpy as np
+import sys
 
+sys.path.append("..")
 import utils
 
 
