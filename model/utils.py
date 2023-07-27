@@ -79,7 +79,7 @@ def get_crf_scrf_label():
         SCRF_l_map[label] = i
         i+=1
     CRF_l_map = {}
-    for pre in ['B-', 'I-']:
+    for pre in ['S-', 'B-', 'I-', 'E-']:
         for suf in SCRF_l_map.keys():
             CRF_l_map[pre + suf] = len(CRF_l_map)
     SCRF_l_map['<STOP>'] = 5
