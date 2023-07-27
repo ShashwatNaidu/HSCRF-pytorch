@@ -7,7 +7,7 @@ import json
 
 import torch.nn as nn
 import torch.nn.init
-from data_packer import CRFDataset_WC
+from model.data_packer import CRFDataset_WC
 
 
 zip = getattr(itertools, 'izip', zip)
