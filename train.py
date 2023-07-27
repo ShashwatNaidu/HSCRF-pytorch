@@ -115,12 +115,12 @@ if __name__ == "__main__":
 
     print('constructing dataset')
     dataset, dataset_onlycrf = utils.construct_bucket_mean_vb_wc(train_features, train_labels, CRF_l_map, SCRF_l_map, c_map, f_map, SCRF_stop_tag=SCRF_l_map['<STOP>'], ALLOW_SPANLEN=args.allowspan, train_set=True)
-    dev_dataset = utils.construct_bucket_mean_vb_wc(dev_features, dev_labels, CRF_l_map, SCRF_l_map, c_map, f_map, SCRF_stop_tag=SCRF_l_map['<STOP>'], train_set=False)
+    # dev_dataset = utils.construct_bucket_mean_vb_wc(dev_features, dev_labels, CRF_l_map, SCRF_l_map, c_map, f_map, SCRF_stop_tag=SCRF_l_map['<STOP>'], train_set=False)
     test_dataset = utils.construct_bucket_mean_vb_wc(test_features, test_labels, CRF_l_map, SCRF_l_map, c_map, f_map, SCRF_stop_tag=SCRF_l_map['<STOP>'], train_set=False)
 
     dataset_loader = [torch.utils.data.DataLoader(tup, args.batch_size, shuffle=True, drop_last=False) for tup in dataset]
     dataset_loader_crf = [torch.utils.data.DataLoader(tup, 3, shuffle=True, drop_last=False) for tup in dataset_onlycrf] if dataset_onlycrf else None
-    dev_dataset_loader = [torch.utils.data.DataLoader(tup, 50, shuffle=False, drop_last=False) for tup in dev_dataset]
+    # dev_dataset_loader = [torch.utils.data.DataLoader(tup, 50, shuffle=False, drop_last=False) for tup in dev_dataset]
     test_dataset_loader = [torch.utils.data.DataLoader(tup, 50, shuffle=False, drop_last=False) for tup in test_dataset]
 
     print('building model')
@@ -202,7 +202,7 @@ if __name__ == "__main__":
 
 
         dev_f1_crf, dev_pre_crf, dev_rec_crf, dev_acc_crf, dev_f1_scrf, dev_pre_scrf, dev_rec_scrf, dev_acc_scrf, dev_f1_jnt, dev_pre_jnt, dev_rec_jnt, dev_acc_jnt = \
-                evaluator.calc_score(model, dev_dataset_loader)
+                evaluator.calc_score(model, test_dataset_loader)
 
         if dev_f1_jnt > best_dev_f1_jnt:
             early_stop_epochs = 0
