@@ -1,5 +1,8 @@
 import torch
 import torch.nn as nn
+import sys
+
+sys.path.append("..")
 import utils
 import highway_layer
 
