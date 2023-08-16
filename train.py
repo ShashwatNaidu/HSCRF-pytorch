@@ -126,7 +126,7 @@ if __name__ == "__main__":
     
     print(f"Processed data saved to {output_file}.")
 
-    CRF_l_map, SCRF_l_map = utils.get_crf_scrf_label()
+    CRF_l_map, SCRF_l_map = utils.get_crf_scrf_label(args.labels_json)
 
     print('setting:')
     print(args)
