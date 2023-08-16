@@ -66,8 +66,8 @@ def concatChar(input_lines, char_dict):
     return features
 
 
-def get_crf_scrf_label():
-    file = open("/kaggle/input/ner-formatted/labels (6).json")
+def get_crf_scrf_label(file_path):
+    file = open(file_path)
     data = json.load(file)
     label_list = []
     for string in data:
@@ -79,7 +79,7 @@ def get_crf_scrf_label():
         SCRF_l_map[label] = i
         i+=1
     CRF_l_map = {}
-    for pre in ['B-', 'I-']:
+    for pre in ['S-', 'B-', 'I-', 'E-']:
         for suf in SCRF_l_map.keys():
             CRF_l_map[pre + suf] = len(CRF_l_map)
     SCRF_l_map['<START>'] = len(SCRF_l_map)
