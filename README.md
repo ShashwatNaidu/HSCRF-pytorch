@@ -2,10 +2,15 @@
 Glove: You can find the pre-trained word embedding [here](https://nlp.stanford.edu/projects/glove/)
 
 emb_file: path to the above pre trained word embedding file
+
 train_file: keep a name for the processed train file
+
 test_file: keep a name for the processed test file
+
 train_file_csv: provide the input csv train file
+
 test_file_csv: provide input csv test file
+
 labels_json: provide input of labels json file
 
 ```
