@@ -1,30 +1,17 @@
-# Hybrid semi-Markov CRF
-
-HSCRF achieves F1 score of 91.38+/-0.10 on the CoNLL 2003 NER dataset, without using any additional corpus or resource.
-
-## Installation
-
-### PyTorch
-
-The code is based on PyTorch. You can find installation instructions [here](http://pytorch.org/).
-
-### Dependencies
-
-The code is written in Python 2.7 and pytorch 0.2.0. Its dependencies are summarized in the file ```requirements.txt```. You can install these dependencies like this:
-
-```
-pip install -r requirements.txt
-```
-
-### Code reference
-
-[LM-LSTM-CRF](https://github.com/LiyuanLucasLiu/LM-LSTM-CRF)
-
 ## Usage
+Glove: You can find the pre-trained word embedding [here](https://nlp.stanford.edu/projects/glove/)
+
+emb_file: path to the above pre trained word embedding file
+train_file: keep a name for the processed train file
+test_file: keep a name for the processed test file
+train_file_csv: provide the input csv train file
+test_file_csv: provide input csv test file
+labels_json: provide input of labels json file
 
 ```
 !CUDA_VISIBLE_DEVICES=0 python train.py --char_lstm --high_way --emb_file '/kaggle/input/glovedata/glove.6B.100d.txt' --train_file '/kaggle/working/train.txt' --test_file '/kaggle/working/test.txt' --train_file_csv '/kaggle/input/ner-formatted/train (4).csv' --test_file_csv '/kaggle/input/ner-formatted/test (5).csv' --labels_json '/kaggle/input/ner-formatted/labels (6).json'
 ```
+
 
 ### word embeddings
 
