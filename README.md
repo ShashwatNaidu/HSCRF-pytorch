@@ -14,7 +14,7 @@ test_file_csv: provide input csv test file
 labels_json: provide input of labels json file
 
 ```
-!CUDA_VISIBLE_DEVICES=0 python train.py --char_lstm --high_way --emb_file '/kaggle/input/glovedata/glove.6B.100d.txt' --train_file '/kaggle/working/train.txt' --test_file '/kaggle/working/test.txt' --train_file_csv '/kaggle/input/ner-formatted/train (4).csv' --test_file_csv '/kaggle/input/ner-formatted/test (5).csv' --labels_json '/kaggle/input/ner-formatted/labels (6).json'
+CUDA_VISIBLE_DEVICES=0 python train.py --char_lstm --high_way --emb_file '/kaggle/input/glovedata/glove.6B.100d.txt' --train_file '/kaggle/working/train.txt' --test_file '/kaggle/working/test.txt' --train_file_csv '/kaggle/input/ner-formatted/train (4).csv' --test_file_csv '/kaggle/input/ner-formatted/test (5).csv' --labels_json '/kaggle/input/ner-formatted/labels (6).json'
 ```
 
 
