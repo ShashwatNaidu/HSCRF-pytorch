@@ -11,6 +11,9 @@ from tqdm import tqdm
 import itertools
 import functools
 import numpy as np
+import pandas as pd
+import ast
+import json
 
 import model.utils as utils
 from model.evaluator import evaluator
@@ -25,8 +28,18 @@ torch.cuda.manual_seed(seed)
 np.random.seed(seed)
 print('seed: ', seed)
 
-
+# Function to process each group and generate the desired format
+def process_group(group):
+    sentences = []
+    for _, row in group.iterrows():
+        # Map numeric NER tags to their corresponding keys
+        tags = [tag for tag in row['ner_tags']]
+        ner_tags = [list(ner_tags_mapping.keys())[list(ner_tags_mapping.values()).index(tag)] for tag in tags]
+        sentences.extend(list(zip(row['tokens'], ner_tags)))
+    sentences.append(("-DOCSTART-", "O"))
+    return sentences
 if __name__ == "__main__":
+
     parser = argparse.ArgumentParser(description='Learning with LM-LSTM-CRF together with Language Model')
     parser.add_argument('--emb_file', default='./data/glove.6B.100d.txt', help='path to pre-trained embedding')
     parser.add_argument('--train_file', default='./data/eng.train', help='path to training file')
@@ -63,8 +76,55 @@ if __name__ == "__main__":
     parser.add_argument('--char_lstm', action='store_true', help='use lstm for characters embedding or not')
     parser.add_argument('--allowspan', type=int, default=6, help='allowed max segment length')
     parser.add_argument('--grconv', action='store_true', help='use grconv')
-
+    parser.add_argument('--train_file_csv', default=r"/kaggle/input/ner-formatted/train (4).csv", help='path to training file')
+    parser.add_argument('--test_file_csv', default=r"/kaggle/input/ner-formatted/test (5).csv", help='path to test file')
+    parser.add_argument('--labels_json', default='/kaggle/input/ner-formatted/labels (6).json', help='path to labels file')
     args = parser.parse_args()
+
+    train = pd.read_csv(args.train_file_csv)
+    test = pd.read_csv(args.test_file_csv)
+    
+    train_data = train[['index', 'fileName', 'ner_tags', 'tokens']]
+    train_data = train_data.set_index('index', drop = True)
+    train_data = train_data.sort_index()
+    train_data['tokens'] = [ast.literal_eval(tokens_str) for tokens_str in train_data['tokens']]
+    train_data['ner_tags'] = [ast.literal_eval(tags_str) for tags_str in train_data['ner_tags']]
+
+    test_data = test[['index', 'fileName', 'ner_tags', 'tokens']]
+    test_data = test_data.set_index('index', drop = True)
+    test_data = test_data.sort_index()
+    test_data['tokens'] = [ast.literal_eval(tokens_str) for tokens_str in test_data['tokens']]
+    test_data['ner_tags'] = [ast.literal_eval(tags_str) for tags_str in test_data['ner_tags']]
+
+    # Load the NER tags mapping from the JSON file
+    with open(args.labels_json, 'r') as file:
+        ner_tags_mapping = json.load(file)
+    # Group by document_file_name and apply the process_group function to each group
+    grouped_data = train_data.groupby('fileName', group_keys=False).apply(process_group)
+    # Save the processed data to a text file
+    output_file = args.train_file
+    with open(output_file, 'w') as file:
+        for sentence in grouped_data:
+            for token, ner_tag in sentence:
+    #             print(token)
+                formatted_sentence = "".join(f"{token} {ner_tag}")
+                file.write(formatted_sentence + "\n")
+                
+    print(f"Processed data saved to {output_file}.")
+
+    # Group by document_file_name and apply the process_group function to each group
+    grouped_data = test_data.groupby('fileName', group_keys=False).apply(process_group)
+    # Save the processed data to a text file
+    output_file = args.test_file
+    with open(output_file, 'w') as file:
+        for sentence in grouped_data:
+            for token, ner_tag in sentence:
+    #             print(token)
+                formatted_sentence = "".join(f"{token} {ner_tag}")
+                file.write(formatted_sentence + "\n")
+                
+    
+    print(f"Processed data saved to {output_file}.")
 
     CRF_l_map, SCRF_l_map = utils.get_crf_scrf_label()
 
